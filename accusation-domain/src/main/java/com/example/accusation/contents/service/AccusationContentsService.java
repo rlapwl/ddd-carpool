@@ -2,6 +2,8 @@ package com.example.accusation.contents.service;
 
 import com.example.accusation.contents.api.dto.AccusationContentsRequest;
 import com.example.accusation.contents.api.dto.AccusationContentsResponse;
+import com.example.accusation.contents.api.dto.AttackerResponse;
+import com.example.accusation.contents.api.dto.ContentsResponse;
 import com.example.accusation.contents.domain.AccusationContents;
 import com.example.accusation.contents.domain.Attacker;
 import com.example.accusation.contents.domain.Contents;
@@ -10,6 +12,8 @@ import com.example.accusation.usagehistory.service.UsageHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.format.DateTimeFormatter;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -45,11 +49,16 @@ public class AccusationContentsService {
         return AccusationContentsResponse.builder()
                 .id(accusationContents.getId())
                 .accusedUserId(accusationContents.getAccusedUserId())
-                .attackerId(accusationContents.getAttacker().getUserId())
-                .attackerRole(accusationContents.getAttacker().getUserRole())
-                .title(accusationContents.getContents().getTitle())
-                .desc(accusationContents.getContents().getDescription())
-                .createdAt(accusationContents.getCreatedAt())
+                .attackerResponse(
+                        AttackerResponse.of(accusationContents.getAttacker())
+                )
+                .contentsResponse(
+                        ContentsResponse.of(accusationContents.getContents())
+                )
+                .createdAt(
+                        accusationContents.getCreatedAt().format(
+                                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                )
                 .build();
     }
 
