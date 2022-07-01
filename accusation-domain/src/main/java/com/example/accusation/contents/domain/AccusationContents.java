@@ -38,11 +38,11 @@ public class AccusationContents {
     private LocalDateTime createdAt;
 
     @Builder
-    public AccusationContents(Long accusedUserId, Attacker attacker, Contents contents, AccusationStatus accusationStatus) {
+    public AccusationContents(Long accusedUserId, Attacker attacker, Contents contents) {
         this.accusedUserId = accusedUserId;
         this.attacker = attacker;
         this.contents = contents;
-        this.accusationStatus = accusationStatus;
+        this.accusationStatus = AccusationStatus.REGISTERED;
     }
 
 }
