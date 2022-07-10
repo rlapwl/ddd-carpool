@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 public class PartyHistoryListResponse {
 
-    private List<PartyHistoryResponse> partyHistoryResponseList;
+    private List<PartyHistoryResponse> partyHistoryList;
 
     @Getter
     @Builder
@@ -22,15 +22,15 @@ public class PartyHistoryListResponse {
         private String startPlace;
         private String endPlace;
         private String createdAt;
-        private List<MemberResponse> memberResponseList;
+        private List<MemberResponse> memberList;
 
-        public static PartyHistoryResponse of(PartyHistory partyHistory, List<MemberResponse> memberResponseList) {
+        public static PartyHistoryResponse of(PartyHistory partyHistory, List<MemberResponse> memberList) {
             return PartyHistoryResponse.builder()
                     .partyId(partyHistory.getPartyId())
                     .startPlace(partyHistory.getStartPlace())
                     .endPlace(partyHistory.getEndPlace())
                     .createdAt(partyHistory.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
-                    .memberResponseList(memberResponseList)
+                    .memberList(memberList)
                     .build();
         }
 

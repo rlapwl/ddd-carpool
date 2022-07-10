@@ -37,19 +37,19 @@ public class PartyHistoryService {
         LocalDateTime startDatetime = LocalDateTime.of(nowDate.minusDays(SUBTRACT_DAYS), LocalTime.of(0,0,0));
         LocalDateTime endDatetime = LocalDateTime.of(nowDate, LocalTime.of(23,59,59));
 
-        List<PartyHistory> partyHistories = partyHistoryRepository
-                .findByIdAndCreatedAtBetween(memberId, startDatetime,endDatetime);
+        List<PartyHistory> partyHistoryList = partyHistoryRepository
+                .findByIdAndCreatedAtBetween(memberId, startDatetime, endDatetime);
 
-        List<PartyHistoryResponse> partyHistoryResponseList = new ArrayList<>();
-        for (PartyHistory partyHistory : partyHistories) {
+        List<PartyHistoryResponse> partyHistoryResponses = new ArrayList<>();
+        for (PartyHistory partyHistory : partyHistoryList) {
             List<MemberResponse> memberResponseList = partyHistory.getMembersExceptBy(memberId).stream()
                     .map(MemberResponse::of)
                     .collect(Collectors.toList());
 
-            partyHistoryResponseList.add(PartyHistoryResponse.of(partyHistory, memberResponseList));
+            partyHistoryResponses.add(PartyHistoryResponse.of(partyHistory, memberResponseList));
         }
 
-        return new PartyHistoryListResponse(partyHistoryResponseList);
+        return new PartyHistoryListResponse(partyHistoryResponses);
     }
 
 }
