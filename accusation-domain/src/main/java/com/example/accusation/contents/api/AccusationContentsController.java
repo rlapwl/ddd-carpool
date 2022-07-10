@@ -17,7 +17,7 @@ public class AccusationContentsController {
     private final AccusationContentsService accusationContentsService;
 
     @PostMapping
-    public ResponseEntity<?> addContents(@RequestBody AccusationContentsRequest request) {
+    public ResponseEntity addContents(@RequestBody AccusationContentsRequest request) {
         long id = accusationContentsService.addContents(request);
         return ResponseEntity.created(URI.create("/accusation/" + id)).build();
     }

@@ -1,5 +1,6 @@
 package com.example.accusation.contents.api.dto;
 
+import com.example.accusation.partyhistory.api.dto.MemberResponse;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -8,9 +9,11 @@ import lombok.Getter;
 public class AccusationContentsResponse {
 
     private long id;
-    private long accusedUserId;
-    private AttackerResponse attackerResponse;
-    private ContentsResponse contentsResponse;
+    private String startPlace;
+    private String endPlace;
+    private String usageTime;
+    private MemberResponse accusedMember;
+    private ContentsResponse contents;
     private String createdAt;
 
 }

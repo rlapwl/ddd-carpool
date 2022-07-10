@@ -26,12 +26,6 @@ public class PartyHistoryService {
 
     private final PartyHistoryRepository partyHistoryRepository;
 
-    public boolean isUsedService(long memberId) {
-        // 신고할때, 서비스를 사용하고 이후 3일 이내로 신고할 수 있게 제한을 둘 것인지..?
-        //return usageHistoryRepository.findByUserId(userId).size() > 0;
-        return true;
-    }
-
     public PartyHistoryListResponse getPartyHistoryList(long memberId) {
         LocalDate nowDate = LocalDate.now();
         LocalDateTime startDatetime = LocalDateTime.of(nowDate.minusDays(SUBTRACT_DAYS), LocalTime.of(0,0,0));

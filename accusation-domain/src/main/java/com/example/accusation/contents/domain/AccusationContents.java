@@ -1,5 +1,6 @@
 package com.example.accusation.contents.domain;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,9 +11,9 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
-@NoArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "ACCUSATION_CONTENTS")
 public class AccusationContents {
 
@@ -20,11 +21,14 @@ public class AccusationContents {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "ACCUSED_USER_ID", nullable = false)
-    private Long accusedUserId;
+    @Column(name = "PARTY_ID", nullable = false)
+    private Long partyId;
 
-    @Embedded
-    private Attacker attacker;
+    @Column(name = "MEMBER_ID", nullable = false)
+    private Long memberId;
+
+    @Column(name = "ACCUSED_MEMBER_ID", nullable = false)
+    private Long accusedMemberId;
 
     @Embedded
     private Contents contents;
@@ -38,9 +42,10 @@ public class AccusationContents {
     private LocalDateTime createdAt;
 
     @Builder
-    public AccusationContents(Long accusedUserId, Attacker attacker, Contents contents) {
-        this.accusedUserId = accusedUserId;
-        this.attacker = attacker;
+    public AccusationContents(Long partyId, Long memberId, Long accusedMemberId, Contents contents) {
+        this.partyId = partyId;
+        this.memberId = memberId;
+        this.accusedMemberId = accusedMemberId;
         this.contents = contents;
         this.accusationStatus = AccusationStatus.REGISTERED;
     }

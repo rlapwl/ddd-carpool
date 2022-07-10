@@ -1,18 +1,19 @@
 package com.example.accusation.contents.api.dto;
 
-import com.example.accusation.common.UserRole;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class AccusationContentsRequest {
 
-    private long accusedUserId;
-    private long attackerId;
-    private UserRole attackerRole;
+    private long partyId;
+    private long memberId;
+    private long accusedMemberId;
     private String title;
     private String desc;
 
