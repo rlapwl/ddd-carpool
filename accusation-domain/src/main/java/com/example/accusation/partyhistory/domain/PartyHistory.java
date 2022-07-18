@@ -22,28 +22,13 @@ public class PartyHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "PARTY_ID", nullable = false)
-    private Long partyId;
+    @ManyToOne
+    @JoinColumn(name = "PARTY_INFO_ID")
+    private PartyInfo partyInfo;
 
-    @Column(name = "START_PLACE", nullable = false)
-    private String startPlace;
-
-    @Column(name = "END_PLACE", nullable = false)
-    private String endPlace;
-
-    @Column(name = "CREATED_AT", nullable = false)
-    private LocalDateTime createdAt;
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "partyHistory")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "PARTY_HISTORY_ID")
     private final List<Member> members = new ArrayList<>();
-
-    @Builder
-    public PartyHistory(Long partyId, String startPlace, String endPlace, LocalDateTime createdAt) {
-        this.partyId = partyId;
-        this.startPlace = startPlace;
-        this.endPlace = endPlace;
-        this.createdAt = createdAt;
-    }
 
     public List<Member> getMembersExceptBy(long memberId) {
         return members.stream()

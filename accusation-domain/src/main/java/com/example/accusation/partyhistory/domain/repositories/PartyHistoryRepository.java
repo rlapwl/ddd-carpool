@@ -10,10 +10,10 @@ import java.util.List;
 
 public interface PartyHistoryRepository extends JpaRepository<PartyHistory, Long> {
 
-    @Query(value = "SELECT p FROM Member m JOIN m.partyHistory p WHERE m.memberId = :memberId " +
-        "AND p.createdAt BETWEEN :startDatetime AND :endDatetime")
-    List<PartyHistory> findByIdAndCreatedAtBetween(@Param("memberId") long memberId,
-                                             @Param("startDatetime") LocalDateTime startDatetime,
-                                             @Param("endDatetime") LocalDateTime endDatetime);
+//    @Query(value = "SELECT p FROM Member m JOIN m.partyHistory p WHERE m.memberId = :memberId " +
+//        "AND p.createdAt BETWEEN :startDatetime AND :endDatetime")
+//    List<PartyHistory> findByIdAndCreatedAtBetween(@Param("memberId") long memberId,
+//                                             @Param("startDatetime") LocalDateTime startDatetime,
+//                                             @Param("endDatetime") LocalDateTime endDatetime);
 
 }

@@ -1,6 +1,5 @@
 package com.example.accusation.member.domain;
 
-import com.example.accusation.partyhistory.domain.PartyHistory;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,23 +20,18 @@ public class Member {
     @Column(name = "MEMBER_ID", nullable = false)
     private Long memberId;
 
-    @Column(name = "MEMBER_NAME", nullable = false)
-    private String memberName;
+    @Column(name = "NAME", nullable = false)
+    private String name;
 
-    @Column(name = "MEMBER_ROLE", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private MemberRole memberRole;
+    @Column(name = "DEPARTMENT", nullable = false)
+    private String department;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PARTY_HISTORY_ID")
-    private PartyHistory partyHistory;
+    @Column(name = "PROFILE_IMAGE", nullable = false)
+    private String profileImage;
 
     @Builder
-    public Member(Long memberId, String memberName, MemberRole memberRole, PartyHistory partyHistory) {
+    public Member(Long memberId) {
         this.memberId = memberId;
-        this.memberName = memberName;
-        this.memberRole = memberRole;
-        this.partyHistory = partyHistory;
     }
 
 }
