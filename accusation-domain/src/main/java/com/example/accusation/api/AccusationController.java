@@ -38,7 +38,8 @@ public class AccusationController {
     @Operation(summary = "신고 조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "신고 조회 성공",
-                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = AccusationResponse.class))})
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AccusationResponse.class))})
     })
     @GetMapping("/{id}")
     public ResponseEntity<AccusationResponse> getAccusation(@Parameter(description = "신고 ID") @PathVariable long id,
@@ -50,7 +51,8 @@ public class AccusationController {
     @Operation(summary = "신고 내역 리스트 조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "신고 내역 조회 성공",
-                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = AccusationListResponse.class))})
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AccusationListResponse.class))})
     })
     @GetMapping
     public ResponseEntity<AccusationListResponse> getAccusationList(@RequestParam long memberId) {
@@ -61,7 +63,8 @@ public class AccusationController {
     @Operation(summary = "신고 내용 수정")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "신고 내용 수정 성공",
-                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = AccusationResponse.class))})
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AccusationResponse.class))})
     })
     @PutMapping("/{id}")
     public ResponseEntity<AccusationResponse> modifyAccusation(@Parameter(description = "신고 ID") @PathVariable long id,
@@ -75,7 +78,7 @@ public class AccusationController {
             @ApiResponse(responseCode = "204", description = "신고 삭제 성공")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteAccusationContents(@Parameter(description = "신고 ID") @PathVariable long id) {
+    public ResponseEntity deleteAccusation(@Parameter(description = "신고 ID") @PathVariable long id) {
         accusationService.deleteAccusation(id);
         return ResponseEntity.noContent().build();
     }

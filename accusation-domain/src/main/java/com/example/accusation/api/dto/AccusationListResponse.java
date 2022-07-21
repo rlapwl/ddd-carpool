@@ -2,6 +2,7 @@ package com.example.accusation.api.dto;
 
 import com.example.accusation.domain.Accusation;
 import com.example.accusation.domain.AccusationStatus;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,6 +27,7 @@ public class AccusationListResponse {
         return new AccusationListResponse(accusationResponseList);
     }
 
+    @Getter
     @Builder
     public static class AccusationInfoResponse {
 
