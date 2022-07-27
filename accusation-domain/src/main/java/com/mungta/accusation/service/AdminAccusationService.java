@@ -39,7 +39,7 @@ public class AdminAccusationService {
 
         if (accusation.getAccusationStatus() == AccusationStatus.COMPLETED) {
             // 회원 시스템으로 신고당한 사람 ID 전송
-            // 신고당한 사람에게 이메일 전송할 건지 검토..
+            // 신고당한 사람에게 이메일 전송..
         }
 
         return AdminAccusationResponse.of(accusation);
