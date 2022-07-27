@@ -12,21 +12,17 @@ import javax.validation.constraints.NotBlank;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PartyRequest {
+public class AccusedMemberRequest {
 
-    @Schema(description = "파티 ID")
-    private long partyId;
+    @Schema(description = "신고 대상 회원 ID")
+    private String id;
 
-    @Schema(description = "출발지")
+    @Schema(description = "신고 대상 회원 이름")
     @NotBlank
-    private String placeOfDeparture;
+    private String name;
 
-    @Schema(description = "도착지")
+    @Schema(description = "신고 대상 회원 Email")
     @NotBlank
-    private String destination;
-
-    @Schema(description = "파티 시작했던 시간")
-    @NotBlank
-    private String startedDateTime;
+    private String emailAddress;
 
 }

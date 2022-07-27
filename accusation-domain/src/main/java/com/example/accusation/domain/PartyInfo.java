@@ -1,24 +1,14 @@
 package com.example.accusation.domain;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.hibernate.Hibernate;
+import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
-@Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "PARTIES")
-public class Party {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@Embeddable
+public class PartyInfo {
 
     @Column(name = "PARTY_ID", nullable = false)
     private Long partyId;
@@ -29,11 +19,11 @@ public class Party {
     @Column(name = "DESTINATION", nullable = false)
     private String destination;
 
-    @Column(name = "STARTED_DATE_TIME", nullable = false)
+    @Column(name = "PARTY_STARTED_DATE_TIME", nullable = false)
     private String startedDateTime;
 
     @Builder
-    public Party(Long partyId, String placeOfDeparture, String destination, String startedDateTime) {
+    public PartyInfo(Long partyId, String placeOfDeparture, String destination, String startedDateTime) {
         this.partyId = partyId;
         this.placeOfDeparture = placeOfDeparture;
         this.destination = destination;
@@ -43,14 +33,17 @@ public class Party {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Party partyInfo = (Party) o;
-        return id != null && Objects.equals(id, partyInfo.id);
+        if (o == null || getClass() != o.getClass()) return false;
+        PartyInfo partyInfo = (PartyInfo) o;
+        return Objects.equals(partyId, partyInfo.partyId)
+                && Objects.equals(placeOfDeparture, partyInfo.placeOfDeparture)
+                && Objects.equals(destination, partyInfo.destination)
+                && Objects.equals(startedDateTime, partyInfo.startedDateTime);
     }
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return Objects.hash(partyId, placeOfDeparture, destination, startedDateTime);
     }
 
 }

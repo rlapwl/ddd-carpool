@@ -1,7 +1,7 @@
 package com.example.accusation.api.dto.admin;
 
 import com.example.accusation.api.dto.AccusationContentsResponse;
-import com.example.accusation.api.dto.PartyResponse;
+import com.example.accusation.api.dto.PartyInfoResponse;
 import com.example.accusation.domain.Accusation;
 import com.example.accusation.domain.AccusationStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,10 +15,10 @@ public class AdminAccusationResponse {
     @Schema(description = "신고 ID")
     private long id;
 
-    private PartyResponse party;
-
     @Schema(description = "신고 대상 회원 이름")
     private String accusedMemberName;
+
+    private PartyInfoResponse partyInfo;
 
     private AccusationContentsResponse accusationContents;
 
@@ -31,10 +31,10 @@ public class AdminAccusationResponse {
     public static AdminAccusationResponse of(Accusation accusation) {
         return AdminAccusationResponse.builder()
                 .id(accusation.getId())
-                .party(
-                        PartyResponse.of(accusation.getParty())
-                )
                 .accusedMemberName(accusation.getAccusedMemberName())
+                .partyInfo(
+                        PartyInfoResponse.of(accusation.getPartyInfo())
+                )
                 .accusationContents(
                         AccusationContentsResponse.of(accusation.getAccusationContents())
                 )

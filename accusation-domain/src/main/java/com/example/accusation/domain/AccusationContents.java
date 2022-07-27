@@ -16,16 +16,6 @@ public class AccusationContents {
     @Column(name = "DESC")
     private String desc;
 
-    @PrePersist
-    public void prePersist() {
-        this.desc = (this.desc == null) ? "" : this.desc;
-    }
-
-    public void modify(AccusationContents accusationContents) {
-        this.title = accusationContents.getTitle();
-        this.desc = accusationContents.getDesc();
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

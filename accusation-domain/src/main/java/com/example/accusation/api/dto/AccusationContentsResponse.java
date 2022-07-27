@@ -3,8 +3,10 @@ package com.example.accusation.api.dto;
 import com.example.accusation.domain.AccusationContents;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
+@EqualsAndHashCode
 @Getter
 @Builder
 public class AccusationContentsResponse {

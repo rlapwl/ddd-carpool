@@ -43,7 +43,7 @@ public class AccusationController {
     })
     @GetMapping("/{id}")
     public ResponseEntity<AccusationResponse> getAccusation(@Parameter(description = "신고 ID") @PathVariable long id,
-                                                            @RequestParam long memberId) {
+                                                            @RequestParam String memberId) {
         AccusationResponse response = accusationService.getAccusation(id, memberId);
         return ResponseEntity.ok(response);
     }
@@ -55,7 +55,7 @@ public class AccusationController {
                             schema = @Schema(implementation = AccusationListResponse.class))})
     })
     @GetMapping
-    public ResponseEntity<AccusationListResponse> getAccusationList(@RequestParam long memberId) {
+    public ResponseEntity<AccusationListResponse> getAccusationList(@RequestParam String memberId) {
         AccusationListResponse response = accusationService.getAccusationList(memberId);
         return ResponseEntity.ok(response);
     }

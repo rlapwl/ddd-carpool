@@ -6,25 +6,18 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
-
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class AccusationRequest {
 
-    private PartyRequest party;
-
     @Schema(description = "신고 등록한 회원 ID")
-    private long memberId;
+    private String memberId;
 
-    @Schema(description = "신고 대상 회원 ID")
-    private long accusedMemberId;
+    private PartyInfoRequest partyInfo;
 
-    @Schema(description = "신고 대상 회원 이름")
-    @NotBlank
-    private String accusedMemberName;
+    private AccusedMemberRequest accusedMember;
 
     private AccusationContentsRequest accusationContents;
 

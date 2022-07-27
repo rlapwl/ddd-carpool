@@ -5,6 +5,7 @@ import com.example.accusation.domain.AccusationStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.time.format.DateTimeFormatter;
@@ -26,6 +27,8 @@ public class AdminAccusationListResponse {
         return new AdminAccusationListResponse(accusationResponseList);
     }
 
+    @EqualsAndHashCode
+    @Getter
     @Builder
     public static class AdminAccusationInfoResponse {
 
@@ -36,10 +39,7 @@ public class AdminAccusationListResponse {
         private long partyId;
 
         @Schema(description = "신고 등록한 회원 ID")
-        private long memberId;
-
-        @Schema(description = "신고 대상 회원 ID")
-        private long accusedMemberId;
+        private String memberId;
 
         @Schema(description = "제목")
         private String title;
@@ -53,9 +53,8 @@ public class AdminAccusationListResponse {
         public static AdminAccusationInfoResponse of(Accusation accusation) {
             return AdminAccusationInfoResponse.builder()
                     .id(accusation.getId())
-                    .partyId(accusation.getParty().getPartyId())
+                    .partyId(accusation.getPartyInfo().getPartyId())
                     .memberId(accusation.getMemberId())
-                    .accusedMemberId(accusation.getAccusedMember().getId())
                     .title(accusation.getAccusationContents().getTitle())
                     .accusationStatus(accusation.getAccusationStatus())
                     .createdDateTime(
@@ -64,6 +63,7 @@ public class AdminAccusationListResponse {
                     )
                     .build();
         }
+
     }
 
 }

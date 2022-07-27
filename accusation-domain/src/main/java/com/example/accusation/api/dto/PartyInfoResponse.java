@@ -1,13 +1,15 @@
 package com.example.accusation.api.dto;
 
-import com.example.accusation.domain.Party;
+import com.example.accusation.domain.PartyInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
+@EqualsAndHashCode
 @Getter
 @Builder
-public class PartyResponse {
+public class PartyInfoResponse {
 
     @Schema(description = "파티 ID")
     private long partyId;
@@ -21,12 +23,12 @@ public class PartyResponse {
     @Schema(description = "파티 시작했던 시간")
     private String startedDateTime;
 
-    public static PartyResponse of(Party party) {
-        return PartyResponse.builder()
-                .partyId(party.getPartyId())
-                .placeOfDeparture(party.getPlaceOfDeparture())
-                .destination(party.getDestination())
-                .startedDateTime(party.getStartedDateTime())
+    public static PartyInfoResponse of(PartyInfo partyInfo) {
+        return PartyInfoResponse.builder()
+                .partyId(partyInfo.getPartyId())
+                .placeOfDeparture(partyInfo.getPlaceOfDeparture())
+                .destination(partyInfo.getDestination())
+                .startedDateTime(partyInfo.getStartedDateTime())
                 .build();
     }
 

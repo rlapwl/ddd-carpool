@@ -6,6 +6,7 @@ import com.example.accusation.api.dto.admin.AdminAccusationResponse;
 import com.example.accusation.domain.Accusation;
 import com.example.accusation.domain.AccusationStatus;
 import com.example.accusation.domain.repositories.AccusationRepository;
+import com.example.accusation.service.exception.NotFoundAccusationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +25,7 @@ public class AdminAccusationService {
 
     private Accusation getAccusationById(long id) {
         return accusationRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("등록되지 않은 신고글입니다."));
+                .orElseThrow(() -> new NotFoundAccusationException("등록되지 않은 신고글입니다."));
     }
 
     public AdminAccusationListResponse getAccusationList() {

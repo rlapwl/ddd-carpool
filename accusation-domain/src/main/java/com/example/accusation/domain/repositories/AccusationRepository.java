@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface AccusationRepository extends JpaRepository<Accusation, Long> {
 
-    List<Accusation> findByMemberId(long memberId);
+    List<Accusation> findByMemberId(String memberId);
 
 }

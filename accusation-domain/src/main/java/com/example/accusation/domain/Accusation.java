@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Setter
 @Getter
@@ -22,14 +23,13 @@ public class Accusation {
     private Long id;
 
     @Column(name = "MEMBER_ID", nullable = false)
-    private Long memberId;
+    private String memberId;
 
     @Embedded
     private AccusedMember accusedMember;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "PARTY_ID")
-    private Party party;
+    @Embedded
+    private PartyInfo partyInfo;
 
     @Embedded
     private AccusationContents accusationContents;
@@ -50,21 +50,17 @@ public class Accusation {
     private LocalDateTime modifiedDateTime;
 
     @Builder
-    public Accusation(Long memberId, AccusedMember accusedMember, Party party, AccusationContents accusationContents) {
+    public Accusation(String memberId, AccusedMember accusedMember, PartyInfo partyInfo, AccusationContents accusationContents) {
         this.memberId = memberId;
         this.accusedMember = accusedMember;
-        this.party = party;
+        this.partyInfo = partyInfo;
         this.accusationContents = accusationContents;
         this.accusationStatus = AccusationStatus.REGISTERED;
+        this.resultComment = "";
     }
 
-    @PrePersist
-    public void prePersist() {
-        this.resultComment = (this.resultComment == null) ? "" : this.resultComment;
-    }
-
-    public boolean isNotRegisteredMember(long memberId) {
-        return this.memberId != memberId;
+    public boolean isNotWriter(String memberId) {
+        return !this.memberId.equals(memberId);
     }
 
     public boolean isNotRegisteredStatus() {
@@ -76,12 +72,25 @@ public class Accusation {
     }
 
     public void modifyAccusationContents(AccusationContents accusationContents) {
-        this.accusationContents.modify(accusationContents);
+        this.accusationContents = accusationContents;
     }
 
     public void process(AccusationStatus accusationStatus, String resultComment) {
         this.accusationStatus = accusationStatus;
         this.resultComment = StringUtils.stripToEmpty(resultComment);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Accusation that = (Accusation) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
 }

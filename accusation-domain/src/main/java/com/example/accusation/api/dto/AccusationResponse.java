@@ -13,10 +13,10 @@ public class AccusationResponse {
     @Schema(description = "신고 ID")
     private long id;
 
-    private PartyResponse party;
-
     @Schema(description = "신고 대상 회원 이름")
     private String accusedMemberName;
+
+    private PartyInfoResponse partyInfo;
 
     private AccusationContentsResponse accusationContents;
 
@@ -26,10 +26,10 @@ public class AccusationResponse {
     public static AccusationResponse of(Accusation accusation) {
         return AccusationResponse.builder()
                 .id(accusation.getId())
-                .party(
-                        PartyResponse.of(accusation.getParty())
-                )
                 .accusedMemberName(accusation.getAccusedMemberName())
+                .partyInfo(
+                        PartyInfoResponse.of(accusation.getPartyInfo())
+                )
                 .accusationContents(
                         AccusationContentsResponse.of(accusation.getAccusationContents())
                 )

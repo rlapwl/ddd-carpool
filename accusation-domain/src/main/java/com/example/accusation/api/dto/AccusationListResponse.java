@@ -2,10 +2,10 @@ package com.example.accusation.api.dto;
 
 import com.example.accusation.domain.Accusation;
 import com.example.accusation.domain.AccusationStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.time.format.DateTimeFormatter;
@@ -27,6 +27,7 @@ public class AccusationListResponse {
         return new AccusationListResponse(accusationResponseList);
     }
 
+    @EqualsAndHashCode
     @Getter
     @Builder
     public static class AccusationInfoResponse {
@@ -49,7 +50,7 @@ public class AccusationListResponse {
         public static AccusationInfoResponse of(Accusation accusation) {
             return AccusationInfoResponse.builder()
                     .id(accusation.getId())
-                    .partyId(accusation.getParty().getPartyId())
+                    .partyId(accusation.getPartyInfo().getPartyId())
                     .title(accusation.getAccusationContents().getTitle())
                     .accusationStatus(accusation.getAccusationStatus())
                     .createdDateTime(
@@ -58,6 +59,7 @@ public class AccusationListResponse {
                     )
                     .build();
         }
+
     }
 
 }
