@@ -1,4 +1,4 @@
-package com.example.accusation;
+package com.mungta.accusation;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
