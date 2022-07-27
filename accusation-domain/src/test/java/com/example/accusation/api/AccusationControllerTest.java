@@ -17,8 +17,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static com.example.accusation.constants.AccusationTestSample.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -40,61 +40,46 @@ class AccusationControllerTest {
     @BeforeEach
     void setUp() {
         accusation = Accusation.builder()
-                .memberId(1L)
+                .memberId(MEMBER_ID)
                 .accusedMember(
-                        new AccusedMember(2L, "통통이")
+                        AccusedMember.builder()
+                                .id(ACCUSED_MEMBER_ID)
+                                .name(ACCUSED_MEMBER_NAME)
+                                .emailAddress(ACCUSED_MEMBER_EMAIL)
+                                .build()
                 )
-                .party(
-                        Party.builder()
-                                .partyId(1L)
-                                .placeOfDeparture("정자역")
-                                .destination("사당역")
-                                .startedDateTime("2022-07-18 18:20")
+                .partyInfo(
+                        PartyInfo.builder()
+                                .partyId(PARTY_ID)
+                                .placeOfDeparture(PLACE_OF_DEPARTURE)
+                                .destination(DESTINATION)
+                                .startedDateTime(STARTED_DATE_TIME)
                                 .build()
                 )
                 .accusationContents(
-                        new AccusationContents("신고합니다.", "내용")
+                        new AccusationContents(CONTENTS_TITLE, CONTENTS_DESC)
                 )
                 .build();
-        accusation.setId(1L);
+        accusation.setId(ACCUSATION_ID);
         accusation.setCreatedDateTime(LocalDateTime.now());
     }
 
     @DisplayName("신고 등록")
     @Test
     void addAccusation() throws Exception {
-        AccusationRequest request = AccusationRequest.builder()
-                .party(
-                        PartyRequest.builder()
-                                .partyId(1L)
-                                .placeOfDeparture("정자역")
-                                .destination("사당역")
-                                .startedDateTime("2022-07-18 18:20")
-                                .build()
-                )
-                .memberId(1L)
-                .accusedMemberId(2L)
-                .accusedMemberName("통통이")
-                .accusationContents(
-                        AccusationContentsRequest.builder()
-                                .title("신고합니다.")
-                                .desc("내용")
-                                .build()
-                )
-                .build();
 
-        doReturn(1L)
+        doReturn(ACCUSATION_ID)
                 .when(accusationService).addAccusation(any());
 
         ResultActions result = mockMvc.perform(
                 post("/mungta/accusations")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(request))
+                        .content(new ObjectMapper().writeValueAsString(ACCUSATION_REQUEST))
         );
 
         result.andExpect(status().isCreated())
-                .andExpect(header().string("Location", "/mungta/accusations/1"));
+                .andExpect(header().string("Location", "/mungta/accusations/" + ACCUSATION_ID));
     }
 
     @DisplayName("신고 조회")
@@ -103,23 +88,23 @@ class AccusationControllerTest {
         AccusationResponse response = AccusationResponse.of(accusation);
         
         doReturn(response)
-                .when(accusationService).getAccusation(anyLong(), anyLong());
+                .when(accusationService).getAccusation(anyLong(), anyString());
 
         ResultActions result = mockMvc.perform(
-                get("/mungta/accusations/1")
+                get("/mungta/accusations/" + ACCUSATION_ID)
                         .accept(MediaType.APPLICATION_JSON)
-                        .param("memberId", "1")
+                        .param("memberId", MEMBER_ID)
         );
 
         result.andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.party.partyId").value(1))
-                .andExpect(jsonPath("$.party.placeOfDeparture").value("정자역"))
-                .andExpect(jsonPath("$.party.destination").value("사당역"))
-                .andExpect(jsonPath("$.party.startedDateTime").value("2022-07-18 18:20"))
-                .andExpect(jsonPath("$.accusedMemberName").value("통통이"))
-                .andExpect(jsonPath("$.accusationContents.title").value("신고합니다."))
-                .andExpect(jsonPath("$.accusationContents.desc").value("내용"))
+                .andExpect(jsonPath("$.id").value(ACCUSATION_ID))
+                .andExpect(jsonPath("$.accusedMemberName").value(ACCUSED_MEMBER_NAME))
+                .andExpect(jsonPath("$.partyInfo.partyId").value(PARTY_ID))
+                .andExpect(jsonPath("$.partyInfo.placeOfDeparture").value(PLACE_OF_DEPARTURE))
+                .andExpect(jsonPath("$.partyInfo.destination").value(DESTINATION))
+                .andExpect(jsonPath("$.partyInfo.startedDateTime").value(STARTED_DATE_TIME))
+                .andExpect(jsonPath("$.accusationContents.title").value(CONTENTS_TITLE))
+                .andExpect(jsonPath("$.accusationContents.desc").value(CONTENTS_DESC))
                 .andExpect(jsonPath("$.accusationStatus").value("REGISTERED"));
     }
 
@@ -129,20 +114,20 @@ class AccusationControllerTest {
         AccusationListResponse response = AccusationListResponse.of(List.of(accusation));
 
         doReturn(response)
-                .when(accusationService).getAccusationList(anyLong());
+                .when(accusationService).getAccusationList(anyString());
 
         ResultActions result = mockMvc.perform(
                 get("/mungta/accusations")
                         .accept(MediaType.APPLICATION_JSON)
-                        .param("memberId", "1")
+                        .param("memberId", MEMBER_ID)
         );
 
         result.andExpect(status().isOk())
                 .andExpect(jsonPath("$.accusations").exists())
                 .andExpect(jsonPath("$.accusations.length()").value(1))
-                .andExpect(jsonPath("$.accusations[0].id").value(1))
-                .andExpect(jsonPath("$.accusations[0].partyId").value(1))
-                .andExpect(jsonPath("$.accusations[0].title").value("신고합니다."))
+                .andExpect(jsonPath("$.accusations[0].id").value(ACCUSATION_ID))
+                .andExpect(jsonPath("$.accusations[0].partyId").value(PARTY_ID))
+                .andExpect(jsonPath("$.accusations[0].title").value(CONTENTS_TITLE))
                 .andExpect(jsonPath("$.accusations[0].accusationStatus").value("REGISTERED"))
                 .andExpect(jsonPath("$.accusations[0].createdDateTime").exists());
     }
@@ -150,32 +135,33 @@ class AccusationControllerTest {
     @DisplayName("신고 내용 수정")
     @Test
     void modifyAccusation() throws Exception {
-        accusation.getAccusationContents().modify(new AccusationContents("제목 수정", "내용 수정"));
+        accusation.modifyAccusationContents(new AccusationContents("제목 수정", "내용 수정"));
         AccusationResponse response = AccusationResponse.of(accusation);
 
         doReturn(response)
                 .when(accusationService).modifyAccusationContents(anyLong(), any());
 
         ResultActions result = mockMvc.perform(
-                put("/mungta/accusations/1")
+                put("/mungta/accusations/" + ACCUSATION_ID)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper()
-                                .writeValueAsString(AccusationContentsRequest.builder()
-                                        .title("제목 수정")
-                                        .desc("내용 수정")
-                                        .build()
+                                .writeValueAsString(
+                                        AccusationContentsRequest.builder()
+                                                .title("제목 수정")
+                                                .desc("내용 수정")
+                                                .build()
                                 )
                         )
         );
 
         result.andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.party.partyId").value(1))
-                .andExpect(jsonPath("$.party.placeOfDeparture").value("정자역"))
-                .andExpect(jsonPath("$.party.destination").value("사당역"))
-                .andExpect(jsonPath("$.party.startedDateTime").value("2022-07-18 18:20"))
-                .andExpect(jsonPath("$.accusedMemberName").value("통통이"))
+                .andExpect(jsonPath("$.id").value(ACCUSATION_ID))
+                .andExpect(jsonPath("$.accusedMemberName").value(ACCUSED_MEMBER_NAME))
+                .andExpect(jsonPath("$.partyInfo.partyId").value(PARTY_ID))
+                .andExpect(jsonPath("$.partyInfo.placeOfDeparture").value(PLACE_OF_DEPARTURE))
+                .andExpect(jsonPath("$.partyInfo.destination").value(DESTINATION))
+                .andExpect(jsonPath("$.partyInfo.startedDateTime").value(STARTED_DATE_TIME))
                 .andExpect(jsonPath("$.accusationContents.title").value("제목 수정"))
                 .andExpect(jsonPath("$.accusationContents.desc").value("내용 수정"))
                 .andExpect(jsonPath("$.accusationStatus").value("REGISTERED"));
@@ -188,7 +174,8 @@ class AccusationControllerTest {
                 .when(accusationService).deleteAccusation(anyLong());
 
         ResultActions result = mockMvc.perform(
-                delete("/mungta/accusations/1")
+                delete("/mungta/accusations/" + ACCUSATION_ID)
+                        .accept(MediaType.APPLICATION_JSON)
         );
 
         result.andExpect(status().isNoContent());
