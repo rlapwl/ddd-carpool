@@ -1,10 +1,7 @@
 server:
-  port: 8080
+  port: 8089
 
 ---
-
-server:
-  port: 8089
 
 springdoc:
   swagger-ui:
@@ -43,9 +40,14 @@ logging:
   level:
     org.hibernate.type: trace
     org.springframework.cloud: debug
+    com.example.accusation: debug
+
+api:
+  url:
+    user: http://localhost:8081/mungta/users
+    party: http://localhost:8082/mungta/parties
 
 ---
-
 
 spring:
   profiles: docker
@@ -70,3 +72,8 @@ spring:
 #        event-out:
 #          destination: petstore
 #          contentType: application/json
+
+api:
+  url:
+    user: http://gateway:8080
+    party: http://gateway:8080
